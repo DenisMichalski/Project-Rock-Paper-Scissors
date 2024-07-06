@@ -42,6 +42,36 @@ function playRound(humanChoice, computerChoice) {
     }
 }
 
+
+
+const buttonsContianer = document.querySelector('.buttons-container');
+
+
+
+const rockButton = document.createElement('button');
+rockButton.id = 'rock';
+rockButton.textContent = 'Rock';
+
+buttonsContianer.appendChild(rockButton);
+
+rockButton.addEventListener('click', playRound);
+
+const paperButton = document.createElement('button');
+paperButton.id = 'paper';
+paperButton.textContent = 'Paper';
+
+buttonsContianer.appendChild(paperButton);
+paperButton.addEventListener('click', playRound);
+
+const scissorsButton = document.createElement('button');
+scissorsButton.id = 'scissors';
+scissorsButton.textContent = 'Scissors';
+
+buttonsContianer.appendChild(scissorsButton);
+scissorsButton.addEventListener('click', playRound);
+
+
+
 // Function to play the game
 function playGame() {
     let humanScore = 0;
@@ -74,4 +104,4 @@ function playGame() {
 }
 
 // Start the game
-playGame();
+// playGame();
