@@ -4,34 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="#" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
     <title>Rock Paper Scissors</title>
 </head>
 <body>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            flex-direction: column; 
-        }
-
-        #header {
-            color: blue;
-            margin-bottom: 20px; 
-        }
-
-        .buttons-container {
-            display: flex;
-        }
-
-        .buttons-container button {
-            margin-right: 10px; 
-        }
-    </style>
     <h1 id="header">Rock Paper Scissors</h1>
-    <div class="buttons-container"></div>
+    <h3>Please select your choice for: Rock Paper or Scissors</h3>
+    <div id="humanChoice"></div>
+    <div id="buttons-container">
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+    </div>
+    <div id="results"></div>
+    <div id="score"></div>
     <script src="script.js"></script>
 </body>
 </html>

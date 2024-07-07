@@ -1,4 +1,9 @@
+// Array of choices
 const choices = ["rock", "paper", "scissors"];
+
+// Initial scores
+let humanScore = 0;
+let computerScore = 0;
 
 // Function to get the computer's choice
 function getComputerChoice() {
@@ -6,21 +11,17 @@ function getComputerChoice() {
     return choices[randomIndex];
 }
 
-// Function to get the human's choice
-function getHumanChoice() {
-    let humanChoice = prompt("Please enter your choice: Rock, Paper, or Scissors?");
-    while (!humanChoice || !choices.includes(humanChoice.toLowerCase())) {
-        if (!humanChoice) {
-            console.log("Game cancelled.");
-            return null;
-        }
-        humanChoice = prompt("Invalid choice! Please enter Rock, Paper, or Scissors:");
-    }
-    return humanChoice.toLowerCase();
+// Function to play a single round
+function playRound(humanChoice) {
+    const computerChoice = getComputerChoice();
+    const roundResult = determineRoundResult(humanChoice, computerChoice);
+    displayResult(roundResult);
+    updateScore(roundResult.result);
+    checkEndGame();
 }
 
-// Function to play a single round
-function playRound(humanChoice, computerChoice) {
+// Function to determine the result of a round
+function determineRoundResult(humanChoice, computerChoice) {
     if (humanChoice === computerChoice) {
         return { result: "tie", message: `It's a Tie! You both picked ${humanChoice}` };
     }
@@ -32,76 +33,69 @@ function playRound(humanChoice, computerChoice) {
     ) {
         return { 
             result: "win", 
-            message: `You Win! ${humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1)} beats ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)}` 
+            message: `You Win! ${capitalizeFirstLetter(humanChoice)} beats ${computerChoice}` 
         };
     } else {
         return { 
             result: "lose", 
-            message: `You Lose! ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)} beats ${humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1)}` 
+            message: `You Lose! ${computerChoice} beats ${capitalizeFirstLetter(humanChoice)}` 
         };
     }
 }
 
+// Function to capitalize the first letter of a string
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
+// Function to display the result on the page
+function displayResult(roundResult) {
+    const resultsDisplay = document.getElementById('results');
+    resultsDisplay.textContent = roundResult.message;
+}
 
-const buttonsContianer = document.querySelector('.buttons-container');
-
-
-
-const rockButton = document.createElement('button');
-rockButton.id = 'rock';
-rockButton.textContent = 'Rock';
-
-buttonsContianer.appendChild(rockButton);
-
-rockButton.addEventListener('click', playRound);
-
-const paperButton = document.createElement('button');
-paperButton.id = 'paper';
-paperButton.textContent = 'Paper';
-
-buttonsContianer.appendChild(paperButton);
-paperButton.addEventListener('click', playRound);
-
-const scissorsButton = document.createElement('button');
-scissorsButton.id = 'scissors';
-scissorsButton.textContent = 'Scissors';
-
-buttonsContianer.appendChild(scissorsButton);
-scissorsButton.addEventListener('click', playRound);
-
-
-
-// Function to play the game
-function playGame() {
-    let humanScore = 0;
-    let computerScore = 0;
-
-    for (let i = 0; i < 5; i++) {
-        const humanSelection = getHumanChoice();
-        if (humanSelection === null) return; // Exit the game if the user cancels
-
-        const computerSelection = getComputerChoice();
-        const roundResult = playRound(humanSelection, computerSelection);
-        console.log(roundResult.message);
-
-        if (roundResult.result === "win") {
-            humanScore++;
-        } else if (roundResult.result === "lose") {
-            computerScore++;
-        }
-
-        console.log(`Round ${i + 1}: Human Score: ${humanScore}, Computer Score: ${computerScore}`);
+// Function to update the score and display it
+function updateScore(result) {
+    const scoreDisplay = document.getElementById('score');
+    if (result === "win") {
+        humanScore++;
+    } else if (result === "lose") {
+        computerScore++;
     }
 
-    if (humanScore > computerScore) {
-        console.log("Congratulations! You won the game!");
-    } else if (humanScore < computerScore) {
-        console.log("Sorry, you lost the game. Better luck next time!");
-    } else {
-        console.log("It's a tie game!");
+    scoreDisplay.textContent = `Score: You ${humanScore} - Computer ${computerScore}`;
+}
+
+// Function to check if the game should end
+function checkEndGame() {
+    if (humanScore === 5) {
+        announceWinner("You");
+        resetGame();
+    } else if (computerScore === 5) {
+        announceWinner("Computer");
+        resetGame();
     }
 }
 
-// Start the game
-// playGame();
+// Function to announce the winner
+function announceWinner(winner) {
+    const resultsDisplay = document.getElementById('results');
+    resultsDisplay.textContent = `${winner} wins the game!`;
+
+    // Optionally, you can reset the scores here if needed
+    // humanScore = 0;
+    // computerScore = 0;
+}
+
+// Function to reset the game
+function resetGame() {
+    humanScore = 0;
+    computerScore = 0;
+    const scoreDisplay = document.getElementById('score');
+    scoreDisplay.textContent = `Score: You ${humanScore} - Computer ${computerScore}`;
+}
+
+// Event listeners for buttons
+document.getElementById('rock').addEventListener('click', () => playRound('rock'));
+document.getElementById('paper').addEventListener('click', () => playRound('paper'));
+document.getElementById('scissors').addEventListener('click', () => playRound('scissors'));
